@@ -2,7 +2,12 @@
   "name": "playwright-poc",
   "version": "1.0.0",
   "description": "playwright dummy project for poc and practice",
-  "scripts": {},
+  "scripts": {
+    "test": "yarn playwright test",
+    "test:headed": "yarn playwright test --headed",
+    "test:debug": "yarn playwright test --debug",
+    "typecheck": "tsc --noEmit"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/admalik10pearls/playwright-poc.git"
@@ -12,9 +17,11 @@
   "bugs": {
     "url": "https://github.com/admalik10pearls/playwright-poc/issues"
   },
+  "type": "module",
   "homepage": "https://github.com/admalik10pearls/playwright-poc#readme",
   "devDependencies": {
     "@playwright/test": "^1.57.0",
-    "@types/node": "^25.0.10"
+    "@types/node": "^25.0.10",
+    "typescript": "^5.9.3"
   }
 }
