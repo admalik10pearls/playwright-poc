@@ -1,0 +1,59 @@
+{
+  "name": "playwright-poc",
+  "version": "1.0.0",
+  "description": "playwright dummy project for poc and practice",
+  "scripts": {
+    "prepare": "husky install",
+    "commit": "cz",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "yarn playwright test",
+    "test:headed": "yarn playwright test --headed",
+    "test:debug": "yarn playwright test --debug",
+    "typecheck": "tsc --noEmit"
+  },
+  "lint-staged": {
+    "*.ts": [
+      "eslint --fix",
+      "prettier --write"
+    ]
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  },
+  "engines": {
+    "node": "20"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/admalik10pearls/playwright-poc.git"
+  },
+  "author": "Ahmad Amir Malik",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/admalik10pearls/playwright-poc/issues"
+  },
+  "type": "module",
+  "homepage": "https://github.com/admalik10pearls/playwright-poc#readme",
+  "devDependencies": {
+    "@commitlint/cli": "^20.3.1",
+    "@commitlint/config-conventional": "^20.3.1",
+    "@playwright/test": "^1.57.0",
+    "@types/node": "^25.0.10",
+    "@typescript-eslint/eslint-plugin": "^8.53.1",
+    "@typescript-eslint/parser": "^8.53.1",
+    "commitizen": "^4.3.1",
+    "cz-conventional-changelog": "^3.3.0",
+    "eslint": "^9.39.2",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-playwright": "^2.5.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.2.7",
+    "prettier": "^3.8.1",
+    "typescript": "^5.9.3"
+  }
+}
