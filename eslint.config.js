@@ -5,12 +5,7 @@ import prettier from 'eslint-config-prettier';
 
 export default [
   {
-    ignores: [
-      'node_modules/**',
-      'dist/**',
-      'playwright-report/**',
-      'test-results/**'
-    ]
+    ignores: ['node_modules/**', 'dist/**', 'playwright-report/**', 'test-results/**'],
   },
   {
     files: ['**/*.ts'],
@@ -18,12 +13,12 @@ export default [
       parser: tsParser,
       parserOptions: {
         project: './tsconfig.json',
-        sourceType: 'module'
-      }
+        sourceType: 'module',
+      },
     },
     plugins: {
       '@typescript-eslint': tseslint,
-      playwright
+      playwright,
     },
     rules: {
       // TypeScript
@@ -34,8 +29,8 @@ export default [
       'playwright/no-focused-test': 'error',
       'playwright/no-skipped-test': 'warn',
       'playwright/no-wait-for-timeout': 'warn',
-      'playwright/expect-expect': 'error'
-    }
+      'playwright/expect-expect': 'error',
+    },
   },
-  prettier
+  prettier,
 ];
