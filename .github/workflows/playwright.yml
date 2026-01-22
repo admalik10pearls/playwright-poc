@@ -54,7 +54,7 @@ jobs:
         run: yarn playwright install-deps
 
       - name: Install Playwright Browsers
-        run: yarn playwright install --with-deps --only-missing
+        run: yarn playwright install --with-deps
 
       - name: TypeScript Type Check
         run: yarn typecheck
