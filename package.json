@@ -5,6 +5,10 @@
   "scripts": {
     "prepare": "husky install",
     "commit": "cz",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
     "test": "yarn playwright test",
     "test:headed": "yarn playwright test --headed",
     "test:debug": "yarn playwright test --debug",
