@@ -37,6 +37,8 @@
   "type": "module",
   "homepage": "https://github.com/admalik10pearls/playwright-poc#readme",
   "devDependencies": {
+    "@commitlint/cli": "^20.3.1",
+    "@commitlint/config-conventional": "^20.3.1",
     "@playwright/test": "^1.57.0",
     "@types/node": "^25.0.10",
     "@typescript-eslint/eslint-plugin": "^8.53.1",
