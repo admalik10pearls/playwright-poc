@@ -98,7 +98,7 @@ jobs:
 
       - name: Install Playwright OS Dependencies
         run: yarn playwright install-deps
-        
+
       - name: Run Playwright Tests
         run: yarn test
 
