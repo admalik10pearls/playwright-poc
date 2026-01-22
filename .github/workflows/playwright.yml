@@ -50,9 +50,11 @@ jobs:
         if: steps.yarn-cache.outputs.cache-hit != 'true'
         run: yarn install --frozen-lockfile
 
+      - name: Install Playwright OS Dependencies
+        run: yarn playwright install-deps
+
       - name: Install Playwright Browsers
-        if: steps.pw-cache.outputs.cache-hit != 'true'
-        run: yarn playwright install --with-deps
+        run: yarn playwright install --with-deps --only-missing
 
       - name: TypeScript Type Check
         run: yarn typecheck
@@ -94,6 +96,9 @@ jobs:
           restore-keys: |
             pw-cache-${{ runner.os }}-playwright-
 
+      - name: Install Playwright OS Dependencies
+        run: yarn playwright install-deps
+        
       - name: Run Playwright Tests
         run: yarn test
 
