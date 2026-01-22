@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "playwright dummy project for poc and practice",
   "scripts": {
+    "prepare": "husky install",
     "commit": "cz",
     "test": "yarn playwright test",
     "test:headed": "yarn playwright test --headed",
@@ -30,6 +31,7 @@
     "@types/node": "^25.0.10",
     "commitizen": "^4.3.1",
     "cz-conventional-changelog": "^3.3.0",
+    "husky": "^9.1.7",
     "typescript": "^5.9.3"
   }
 }
