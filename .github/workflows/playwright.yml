@@ -42,9 +42,9 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ~/.cache/ms-playwright
-          key: pw-cache-${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+          key: pw-cache-${{ runner.os }}-playwright-${{ hashFiles('**/package.json') }}
           restore-keys: |
-            pw-cache-${{ runner.os }}-
+            pw-cache-${{ runner.os }}-playwright-
 
       - name: Install Dependencies
         if: steps.yarn-cache.outputs.cache-hit != 'true'
@@ -86,12 +86,17 @@ jobs:
             yarn-cache-${{ runner.os }}-
 
       - name: Restore Playwright Browser Cache
+        id: pw-cache
         uses: actions/cache@v3
         with:
           path: ~/.cache/ms-playwright
-          key: pw-cache-${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+          key: pw-cache-${{ runner.os }}-playwright-${{ hashFiles('**/package.json') }}
           restore-keys: |
-            pw-cache-${{ runner.os }}-
+            pw-cache-${{ runner.os }}-playwright-
+
+      - name: Install Playwright Browsers
+        if: steps.pw-cache.outputs.cache-hit != 'true'
+        run: yarn playwright install --with-deps
 
       - name: Run Playwright Tests
         run: yarn test
