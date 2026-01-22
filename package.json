@@ -1,0 +1,20 @@
+{
+  "name": "playwright-poc",
+  "version": "1.0.0",
+  "description": "playwright dummy project for poc and practice",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/admalik10pearls/playwright-poc.git"
+  },
+  "author": "Ahmad Amir Malik",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/admalik10pearls/playwright-poc/issues"
+  },
+  "homepage": "https://github.com/admalik10pearls/playwright-poc#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.57.0",
+    "@types/node": "^25.0.10"
+  }
+}
