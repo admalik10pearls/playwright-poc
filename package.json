@@ -12,12 +12,13 @@
     "test": "yarn playwright test",
     "test:headed": "yarn playwright test --headed",
     "test:debug": "yarn playwright test --debug",
+    "test:interactive": "yarn playwright test --ui",
     "typecheck": "tsc --noEmit"
   },
   "lint-staged": {
     "*.ts": [
-      "eslint --fix",
-      "prettier --write"
+      "eslint .",
+      "prettier --check ."
     ]
   },
   "config": {
