@@ -17,8 +17,8 @@
   },
   "lint-staged": {
     "*.ts": [
-      "eslint .",
-      "prettier --check ."
+      "eslint --max-warnings=0",
+      "prettier --write"
     ]
   },
   "config": {
