@@ -1,9 +1,9 @@
 import { defineConfig, devices } from '@playwright/test';
 import dotenv from 'dotenv';
-
 dotenv.config();
 
 export default defineConfig({
+  globalSetup: './global-setup.ts',
   testDir: './tests',
   /* Run tests in files in parallel */
   fullyParallel: true,
@@ -21,6 +21,7 @@ export default defineConfig({
     baseURL: 'https://www.saucedemo.com',
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
+    storageState: 'auth.json',
   },
 
   /* Configure projects for major browsers */
