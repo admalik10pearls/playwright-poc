@@ -1,27 +1,88 @@
 name: Playwright Tests
+
 on:
   push:
-    branches: [main]
+    branches:
+      - main
   pull_request:
-    branches: [main]
+    branches:
+      - main
+
+env:
+  NODE_VERSION: 20
+
 jobs:
-  test:
-    timeout-minutes: 60
+  setup:
+    name: Setup & Code Quality Checks
     runs-on: ubuntu-latest
+    outputs:
+      yarn-cache-hit: ${{ steps.yarn-cache.outputs.cache-hit }}
+      pw-cache-hit: ${{ steps.pw-cache.outputs.cache-hit }}
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v6
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
         with:
-          node-version: 20
-      - name: Install dependencies
-        run: npm install -g yarn && yarn
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Restore Yarn Cache
+        id: yarn-cache
+        uses: actions/cache@v5
+        with:
+          path: |
+            **/node_modules
+            **/.yarn/cache
+          key: yarn-cache-${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            yarn-cache-${{ runner.os }}-
+
+      - name: Install Dependencies
+        if: steps.yarn-cache.outputs.cache-hit != 'true'
+        run: yarn install --frozen-lockfile
+
+      - name: TypeScript Type Check
+        run: yarn typecheck
+
+      - name: ESLint Lint
+        run: yarn lint
+
+      - name: Prettier Format Check
+        run: yarn format:check
+
+  test:
+    name: Run Playwright Tests
+    runs-on: ubuntu-latest
+    needs: setup
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Restore Yarn Cache
+        uses: actions/cache@v5
+        with:
+          path: |
+            **/node_modules
+            **/.yarn/cache
+          key: yarn-cache-${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            yarn-cache-${{ runner.os }}-
+
+      - name: Install Playwright OS Dependencies
+        run: yarn playwright install-deps
+
       - name: Install Playwright Browsers
         run: yarn playwright install --with-deps
-      - name: Run Playwright tests
-        run: yarn playwright test
-      - uses: actions/upload-artifact@v4
-        if: ${{ !cancelled() }}
+
+      - name: Run Playwright Tests
+        run: yarn test
+
+      - name: Upload Playwright Report
+        uses: actions/upload-artifact@v6
         with:
           name: playwright-report
           path: playwright-report/
-          retention-days: 30
