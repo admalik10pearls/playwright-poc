@@ -4,7 +4,7 @@ import { ROUTES } from './shared/constants/routes.ts';
 import { STRINGS } from './shared/constants/strings.ts';
 
 export default async function globalSetup(config: FullConfig) {
-  console.log('🔥 Running global setup');
+  console.log('Running global setup');
 
   const { baseURL } = config.projects[0].use;
 
@@ -18,7 +18,6 @@ export default async function globalSetup(config: FullConfig) {
 
   await expect(page).toHaveURL(`${baseURL}${ROUTES.inventory}`);
   await expect(page.getByText(STRINGS.loginErrorText)).toBeHidden();
-  console.log('🔥🔥🔥 GLOBAL SETUP DEFINITELY RAN 🔥🔥🔥');
 
   // Save auth state
   await page.context().storageState({ path: 'auth.json' });
