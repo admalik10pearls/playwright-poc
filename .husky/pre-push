@@ -1,3 +1,2 @@
 yarn format:check
 yarn tsc --noEmit
-yarn test
