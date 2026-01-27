@@ -5,7 +5,7 @@ export class ProductsComponent {
   addToCartButtons;
   productPrice;
 
-  constructor(private page: Page) {
+  constructor(private readonly page: Page) {
     this.products = this.page.locator('[data-test="inventory-item"]');
     this.addToCartButtons = this.page.locator(
       '[data-test="inventory-item"] button:has-text("Add to cart")',

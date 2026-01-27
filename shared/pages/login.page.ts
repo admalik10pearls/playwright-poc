@@ -4,7 +4,7 @@ export class LoginPage {
   usernameInput;
   passwordInput;
   loginBtn;
-  constructor(private page: Page) {
+  constructor(private readonly page: Page) {
     this.usernameInput = this.page.locator('[data-test="username"]');
     this.passwordInput = this.page.locator('[data-test="password"]');
     this.loginBtn = this.page.locator('[data-test="login-button"]');

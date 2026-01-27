@@ -5,7 +5,7 @@ export class InventoryPage {
   products: ProductsComponent;
   cart: CartComponent;
 
-  constructor(private page: Page) {
+  constructor(private readonly page: Page) {
     this.products = new ProductsComponent(this.page);
     this.cart = new CartComponent(this.page);
   }
