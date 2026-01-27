@@ -1,7 +1,8 @@
 import type { Page } from '@playwright/test';
 import { ProductsComponent } from '../components/products.component.ts';
 import { CartComponent } from '../components/cart.component.ts';
-export class InventoryPage {
+
+export class CartPage {
   products: ProductsComponent;
   cart: CartComponent;
 
