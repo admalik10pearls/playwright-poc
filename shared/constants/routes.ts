@@ -1,3 +1,6 @@
+/**
+ * Application routes used by tests/pages.
+ */
 export const ROUTES = {
   inventory: '/inventory.html',
   cart: '/cart.html',

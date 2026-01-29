@@ -1,5 +1,8 @@
 import type { Page } from '@playwright/test';
 
+/**
+ * Component handling cart-specific UI interactions (badge and navigation).
+ */
 export class CartComponent {
   cartBadge;
   cartLink;
@@ -9,10 +12,16 @@ export class CartComponent {
     this.cartLink = this.page.locator('[data-test="shopping-cart-link"]');
   }
 
+  /**
+   * Read the cart badge text (number of items).
+   */
   async getCartCount() {
     return await this.cartBadge.innerText();
   }
 
+  /**
+   * Click the shopping cart link to open the cart view.
+   */
   async openCart() {
     await this.cartLink.click();
   }
