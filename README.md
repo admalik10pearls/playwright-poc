@@ -92,6 +92,12 @@ This project uses GitHub Actions to automatically run Playwright tests on every 
 ```
 .
 ├── shared/                                      # Shared test utilities and page objects
+│   ├── api/                                     # API utilities and clients
+│   │   ├── apiContext.ts                        # API request context factory
+│   │   ├── clients/                             # API client implementations
+│   │   │   └── petstore.client.ts               # Petstore API client
+│   │   └── models/                              # API response models/types
+│   │       └── pet.model.ts                     # Pet model type definition
 │   ├── components/                              # Reusable UI components
 │   │   ├── cart.component.ts                    # Cart functionality component
 │   │   ├── products.component.ts                # Products functionality component
@@ -106,24 +112,26 @@ This project uses GitHub Actions to automatically run Playwright tests on every 
 │   └── utilities/                               # Utility functions
 │       └── utilities.ts                         # Helper utilities
 ├── tests/                                       # Test specifications
+│   ├── api/                                     # API tests
+│   │   └── pet.spec.ts                          # Petstore API tests
 │   ├── inventory.spec.ts                        # Inventory functionality tests
 │   └── login.spec.ts                            # Login functionality tests
 ├── playwright.config.ts                         # Playwright configuration
-├── global-setup.ts                              # Global setup file for tests
+├── global-setup.ts                              # Global setup for auth/login
 ├── package.json                                 # Project dependencies and scripts
 ├── tsconfig.json                                # TypeScript configuration
 ├── eslint.config.js                             # ESLint configuration
 ├── commitlint.config.cjs                        # CommitLint configuration
 ├── .nvmrc                                       # Node.js version lock file
-├── playwright-report/                           # Test results and reports
-├── test-results/                                # Detailed test results
-├── auth.json                                    # Authentication credentials
+├── auth.json                                    # Authentication credentials (generated)
+├── playwright-report/                           # Test results and reports (generated)
+├── test-results/                                # Detailed test results (generated)
 └── README.md                                    # This file
 ```
 
 ## Architecture
 
-This project follows the **Page Object Model (POM)** pattern with a **component-based approach**:
+This project follows the **Page Object Model (POM)** pattern with a **component-based approach** for UI tests, and maintains an **API client pattern** for API tests.
 
 ### Components (`shared/components/`)
 
@@ -140,7 +148,17 @@ Page classes compose components to represent full pages:
 - **CartPage** - Shopping cart page with component composition
 - **LoginPage** - Authentication page
 
-This component-based approach eliminates duplication and promotes reusability across multiple pages.
+This component-based approach eliminates duplication and promotes reusability across UI tests.
+
+### API Layer (`shared/api/`)
+
+API utilities for backend testing:
+
+- **apiContext.ts** - Factory function to create configured API request contexts
+- **PetstoreClient** - Typed client for Petstore API interactions
+- **Pet** - TypeScript model for API responses
+
+Tests can run against both UI (Playwright browser) and API projects independently.
 
 ## Development Workflow
 
