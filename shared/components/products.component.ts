@@ -8,6 +8,10 @@ export class ProductsComponent {
   addToCartButtons;
   productPrice;
 
+  /**
+   *
+   * @param page
+   */
   constructor(private readonly page: Page) {
     this.products = this.page.locator('[data-test="inventory-item"]');
     this.addToCartButtons = this.page.locator(
@@ -18,6 +22,7 @@ export class ProductsComponent {
 
   /**
    * Count products in the listing.
+   * @returns {Promise<number>} The number of products found in the listing.
    */
   async getProductCount() {
     return await this.products.count();
@@ -34,6 +39,7 @@ export class ProductsComponent {
   /**
    * Get the product price text for a given product index.
    * @param index - zero-based index of the product
+   * @returns {Promise<string>} The price text of the specified product.
    */
   async getProductPriceByIndex(index: number) {
     return await this.productPrice.nth(index).innerText();

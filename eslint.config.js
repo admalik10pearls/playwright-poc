@@ -3,6 +3,7 @@ import tsParser from '@typescript-eslint/parser';
 import playwright from 'eslint-plugin-playwright';
 import complexity from 'eslint-plugin-complexity';
 import unusedImports from 'eslint-plugin-unused-imports';
+import jsdoc from 'eslint-plugin-jsdoc';
 import prettier from 'eslint-config-prettier';
 
 export default [
@@ -30,6 +31,7 @@ export default [
       playwright,
       complexity,
       'unused-imports': unusedImports,
+      jsdoc,
     },
     rules: {
       /* ---------- TypeScript ---------- */
@@ -52,11 +54,53 @@ export default [
       'playwright/no-skipped-test': 'warn',
       'playwright/no-wait-for-timeout': 'error',
       'playwright/expect-expect': 'error',
+
+      /* ---------- JSDoc ---------- */
+      'jsdoc/require-jsdoc': [
+        'warn',
+        {
+          require: {
+            FunctionDeclaration: true,
+            ClassDeclaration: true,
+            MethodDefinition: false,
+            ArrowFunctionExpression: false,
+            FunctionExpression: false,
+          },
+          contexts: [
+            'ExportNamedDeclaration > FunctionDeclaration',
+            'ExportNamedDeclaration > ClassDeclaration',
+          ],
+        },
+      ],
+
+      'jsdoc/check-tag-names': 'error',
+      'jsdoc/check-param-names': 'error',
+      'jsdoc/check-types': 'warn',
+      'jsdoc/require-param': 'warn',
+      'jsdoc/require-returns': 'warn',
     },
   },
 
   /* ----------------------------------
-   * 🚫 TEST FILE ENFORCEMENT
+   * 🚫 JSDOCS RULES FOR POM
+   * ---------------------------------- */
+  {
+    files: ['shared/pages/**/*.ts', 'shared/components/**/*.ts'],
+    rules: {
+      'jsdoc/require-jsdoc': [
+        'error',
+        {
+          require: {
+            ClassDeclaration: true,
+            MethodDefinition: true,
+          },
+        },
+      ],
+    },
+  },
+
+  /* ----------------------------------
+   * 🔒 TEST FILE ENFORCEMENT
    * ---------------------------------- */
   {
     files: ['tests/**/*.ts'],
@@ -124,6 +168,9 @@ export default [
     rules: {
       // Config files can be more complex
       complexity: ['warn', { max: 20 }],
+
+      // ⛔ Config files don't need JSDoc
+      'jsdoc/require-jsdoc': 'off',
     },
   },
 

@@ -7,6 +7,10 @@ export class CartComponent {
   cartBadge;
   cartLink;
 
+  /**
+   *
+   * @param page
+   */
   constructor(private readonly page: Page) {
     this.cartBadge = this.page.locator('[data-test="shopping-cart-badge"]');
     this.cartLink = this.page.locator('[data-test="shopping-cart-link"]');
@@ -14,6 +18,7 @@ export class CartComponent {
 
   /**
    * Read the cart badge text (number of items).
+   * @returns the text content of the cart badge, which indicates the number of items in the cart.
    */
   async getCartCount() {
     return await this.cartBadge.innerText();

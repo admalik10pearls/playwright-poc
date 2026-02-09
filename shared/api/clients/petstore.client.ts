@@ -12,6 +12,7 @@ export class PetstoreClient {
 
   /**
    * Build request headers including API key when available.
+   * @returns {object | undefined} Headers object or undefined if no API key is set.
    */
   private getHeaders(): { [key: string]: string } | undefined {
     if (!this.apiKey) return undefined;
@@ -21,6 +22,7 @@ export class PetstoreClient {
   /**
    * Retrieve a pet by id.
    * @param id - pet id
+   * @returns {Promise<Pet>} The pet data returned from the API.
    */
   async getPetById(id: number): Promise<Pet> {
     const response = await this.request.get(`pet/${id}`, {
@@ -32,6 +34,7 @@ export class PetstoreClient {
   /**
    * Find pets by their status.
    * @param status - one of 'available' | 'pending' | 'sold'
+   * @returns {Promise<Pet[]>} An array of pets matching the given status.
    */
   async findPetsByStatus(status: 'available' | 'pending' | 'sold'): Promise<Pet[]> {
     const response = await this.request.get(`pet/findByStatus`, {

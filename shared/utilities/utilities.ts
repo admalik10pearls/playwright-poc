@@ -2,6 +2,7 @@
  * Returns a random integer in the range [min, max).
  * @param min - inclusive lower bound
  * @param max - exclusive upper bound (must be greater than `min`)
+ * @returns {number} A random integer between `min` (inclusive) and `max` (exclusive).
  * @throws Error when `max <= min`
  */
 export function getRandomInt(min: number, max: number): number {

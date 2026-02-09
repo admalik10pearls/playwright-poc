@@ -10,13 +10,18 @@ export class CartPage {
   products: ProductsComponent;
   cart: CartComponent;
 
+  /**
+   *
+   * @param page
+   */
   constructor(private readonly page: Page) {
     this.products = new ProductsComponent(this.page);
     this.cart = new CartComponent(this.page);
   }
 
   /**
-   * Return number of products available (same helper as InventoryPage).
+   * Count products in the listing.
+   * @returns {Promise<number>} The number of products found in the listing.
    */
   async getProductCount() {
     return await this.products.getProductCount();
@@ -32,6 +37,7 @@ export class CartPage {
 
   /**
    * Read the cart badge count as shown in the header.
+   * @returns {Promise<number>} The number shown in the cart badge, or 0 if no badge is visible.
    */
   async getCartCount() {
     return await this.cart.getCartCount();
@@ -40,6 +46,7 @@ export class CartPage {
   /**
    * Get product price by index.
    * @param index - zero-based product index
+   * @returns {Promise<string>} The price text of the specified product.
    */
   async getProductPriceByIndex(index: number) {
     return await this.products.getProductPriceByIndex(index);
