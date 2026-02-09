@@ -7,6 +7,7 @@ import jsdoc from 'eslint-plugin-jsdoc';
 import prettier from 'eslint-config-prettier';
 import sonarjs from 'eslint-plugin-sonarjs';
 import importPlugin from 'eslint-plugin-import';
+import boundaries from 'eslint-plugin-boundaries';
 
 export default [
   /* ----------------------------------
@@ -36,8 +37,62 @@ export default [
       jsdoc,
       sonarjs,
       import: importPlugin,
+      boundaries,
+    },
+    settings: {
+      'boundaries/elements': [
+        { type: 'tests', pattern: 'tests/**' },
+        { type: 'pages', pattern: 'shared/pages/**' },
+        { type: 'components', pattern: 'shared/components/**' },
+        { type: 'assertions', pattern: 'shared/assertions/**' },
+        { type: 'constants', pattern: 'shared/constants/**' },
+        { type: 'utilities', pattern: 'shared/utilities/**' },
+        { type: 'api', pattern: 'shared/api/**' },
+      ],
     },
     rules: {
+      /* 🧱 Architectural boundaries */
+      'boundaries/element-types': [
+        'error',
+        {
+          default: 'disallow',
+          rules: [
+            {
+              from: 'tests',
+              allow: ['pages', 'components', 'assertions', 'utilities', 'api', 'constants'],
+            },
+            {
+              from: 'pages',
+              allow: ['components', 'utilities', 'constants'],
+            },
+            {
+              from: 'components',
+              allow: ['utilities', 'constants'],
+            },
+            {
+              from: 'assertions',
+              allow: ['utilities', 'constants'],
+            },
+            {
+              from: 'utilities',
+              allow: ['constants'],
+            },
+            {
+              from: 'api',
+              allow: ['constants', 'utilities'],
+            },
+            {
+              from: 'constants',
+              allow: [],
+            },
+          ],
+        },
+      ],
+
+      // Prevent weird cross-imports
+      'boundaries/no-private': 'error',
+      'boundaries/no-unknown': 'error',
+
       /* ---------- TypeScript ---------- */
       '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
       '@typescript-eslint/no-explicit-any': 'warn',
