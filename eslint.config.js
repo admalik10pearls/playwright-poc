@@ -97,6 +97,20 @@ export default [
       '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
       '@typescript-eslint/no-explicit-any': 'warn',
       '@typescript-eslint/no-floating-promises': 'error',
+      /* ---------- Async correctness ---------- */
+      '@typescript-eslint/await-thenable': 'error',
+
+      '@typescript-eslint/no-misused-promises': [
+        'error',
+        {
+          checksVoidReturn: {
+            attributes: false,
+            arguments: false,
+          },
+        },
+      ],
+
+      '@typescript-eslint/require-await': 'error',
 
       /* ---------- Code Complexity Analysis ---------- */
       complexity: ['error', { max: 10 }],
@@ -243,6 +257,14 @@ export default [
 
       // 💀 Dead code detection in tests
       'unused-imports/no-unused-imports': 'error',
+
+      // Hooks & tests must return/await properly
+      '@typescript-eslint/no-misused-promises': [
+        'error',
+        {
+          checksVoidReturn: true,
+        },
+      ],
     },
   },
 
