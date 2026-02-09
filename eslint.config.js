@@ -1,6 +1,8 @@
 import tseslint from '@typescript-eslint/eslint-plugin';
 import tsParser from '@typescript-eslint/parser';
 import playwright from 'eslint-plugin-playwright';
+import complexity from 'eslint-plugin-complexity';
+import unusedImports from 'eslint-plugin-unused-imports';
 import prettier from 'eslint-config-prettier';
 
 export default [
@@ -26,12 +28,24 @@ export default [
     plugins: {
       '@typescript-eslint': tseslint,
       playwright,
+      complexity,
+      'unused-imports': unusedImports,
     },
     rules: {
       /* ---------- TypeScript ---------- */
       '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
       '@typescript-eslint/no-explicit-any': 'warn',
       '@typescript-eslint/no-floating-promises': 'error',
+
+      /* ---------- Code Complexity Analysis ---------- */
+      complexity: ['error', { max: 10 }],
+
+      /* ---------- Dead Code Detection ---------- */
+      'unused-imports/no-unused-imports': 'error',
+      'unused-imports/no-unused-vars': [
+        'warn',
+        { vars: 'all', varsIgnorePattern: '^_', args: 'after-used', argsIgnorePattern: '^_' },
+      ],
 
       /* ---------- Playwright ---------- */
       'playwright/no-focused-test': 'error',
@@ -72,6 +86,12 @@ export default [
 
       // 🔎 Enforce test grouping
       'playwright/require-top-level-describe': 'error',
+
+      // 📝 Test naming and structure validation
+      complexity: ['error', { max: 8 }], // Tests should be simpler
+
+      // 💀 Dead code detection in tests
+      'unused-imports/no-unused-imports': 'error',
     },
   },
 
@@ -93,6 +113,17 @@ export default [
           format: ['camelCase'],
         },
       ],
+    },
+  },
+
+  /* ----------------------------------
+   * ⚙️ CONFIG FILES EXCEPTION
+   * ---------------------------------- */
+  {
+    files: ['**/playwright.config.ts', '**/global-setup.ts', '**/*.config.ts'],
+    rules: {
+      // Config files can be more complex
+      complexity: ['warn', { max: 20 }],
     },
   },
 
