@@ -19,9 +19,10 @@ test.describe('Petstore API GET tests', () => {
 
   test('get a single pet by ID (dynamic)', async () => {
     const pets = await client.findPetsByStatus('available');
-    const petId = pets[0].id;
+    const petId = pets[1].id;
 
     const pet = await client.getPetById(petId);
+    console.log('Retrieved pet:', pet);
     expect(pet.id).toBe(petId);
     expect(pet.name).toBeDefined();
 
