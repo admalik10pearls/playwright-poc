@@ -12,8 +12,11 @@ This project is a proof-of-concept implementation of end-to-end testing using Pl
 - **TypeScript** - Programming language for type-safe test scripts
 - **GitHub Actions** - CI/CD pipeline for automated testing
 - **ESLint** - Code linting with TypeScript support
+  - `eslint-plugin-complexity` - Code complexity analysis
+  - `eslint-plugin-unused-imports` - Dead code detection
+  - `eslint-plugin-playwright` - Playwright-specific rules
 - **Prettier** - Code formatting
-- **Husky** - Git hooks for pre-commit checks
+- **Husky** - Git hooks for pre-commit and pre-push checks
 - **Commitizen** - Conventional commit messages
 - **CommitLint** - Commit message validation
 
@@ -24,8 +27,9 @@ This project is a proof-of-concept implementation of end-to-end testing using Pl
 - Continuous Integration with GitHub Actions for automated test execution
 - Tests run against a dummy website environment
 - ESLint and Prettier for consistent code style
-- Git hooks for enforcing code quality standards
+- Git hooks for enforcing code quality standards on every commit and push
 - Conventional commit messages with commitizen and commit linting
+- Comprehensive quality gateways for production-ready code (see [Quality Gateways](#quality-gateways) section below)
 
 ## Getting Started
 
@@ -56,11 +60,14 @@ yarn test:debug
 ### Code Quality
 
 ```bash
-# Lint code
+# Lint code (includes complexity analysis & dead code detection)
 yarn lint
 
-# Fix linting issues
+# Fix linting issues (auto-fixes unused imports)
 yarn lint:fix
+
+# Check code complexity
+yarn complexity
 
 # Format code
 yarn format
@@ -160,14 +167,91 @@ API utilities for backend testing:
 
 Tests can run against both UI (Playwright browser) and API projects independently.
 
+## Quality Gateways
+
+This project implements **six automated quality gateways** to ensure code reliability, security, and maintainability. Quality gates are enforced at pre-commit and pre-push stages.
+
+### All Quality Gateways
+
+#### Pre-Commit Gateways (Automatic on `git commit`)
+
+1. **💀 Dead Code Detection** - Automatically removes unused imports and variables
+   - Error on unused imports (blocks commit)
+   - Warning on unused variables (non-blocking)
+   - Auto-fixable via `yarn lint:fix`
+
+2. **📊 Code Complexity Analysis** - Prevents overly complex functions
+   - Max complexity: 10 (general code), 8 (tests), 20 (config)
+   - Helps maintain readable and testable code
+   - Detected during linting
+
+3. **🧪 Test Naming & Structure Validation** - Enforces test best practices
+   - Test names must start with lowercase
+   - Requires describe blocks for organization
+   - Prevents direct page method calls (must use page objects)
+   - Maximum test complexity: 8
+
+#### Pre-Push Gateways (Automatic on `git push`)
+
+4. **🔐 Formatting Check** - Ensures code follows Prettier rules
+   - Blocks push if formatting issues found
+   - Auto-fixable via `yarn format`
+
+5. **📐 Type Safety Check** - Validates TypeScript types
+   - Ensures all code passes strict TypeScript checking
+   - Blocks push if type errors found
+
+6. **✅ Full Test Suite Execution** - Runs all Playwright tests
+   - Blocks push if any tests fail
+   - Ensures no regressions before code reaches remote
+
+### Quality Metrics
+
+| Metric               | Threshold          | Status               |
+| -------------------- | ------------------ | -------------------- |
+| Complexity (general) | Max 10             | Error if exceeded    |
+| Complexity (tests)   | Max 8              | Error if exceeded    |
+| Complexity (config)  | Max 20             | Warning if exceeded  |
+| Unused Imports       | 0                  | Auto-fixed on commit |
+| Type Coverage        | Strict mode        | Validated on push    |
+| Test Structure       | Compliant          | Enforced on commit   |
+| Code Formatting      | Prettier compliant | Enforced on push     |
+
+### Quality Gate Workflow
+
+```
+git commit
+    ↓
+[PRE-COMMIT CHECKS]
+├─ Dead code detection (auto-fix)
+├─ Complexity analysis (max: 10)
+└─ Test structure validation
+    ↓
+✅ Commit successful
+
+git push
+    ↓
+[PRE-PUSH CHECKS]
+├─ Format check (auto-fix)
+├─ Type safety check
+├─ Complexity validation
+└─ Full test suite execution
+    ↓
+✅ Push allowed or ❌ Push blocked (fix and retry)
+```
+
+For detailed quality gateway documentation, see [THREE_GATEWAYS_IMPLEMENTATION.md](THREE_GATEWAYS_IMPLEMENTATION.md).
+
 ## Development Workflow
 
 1. **Make changes** to test files or code
 2. **Lint and format** code with `yarn lint:fix` and `yarn format`
 3. **Type check** with `yarn typecheck`
 4. **Run tests** with `yarn test` or `yarn test:headed` for debugging
-5. **Commit** changes using `yarn commit` for conventional commits
-6. **Push** to GitHub, which triggers CI/CD tests via GitHub Actions
+5. **Commit** changes using `yarn commit` for conventional commits (pre-commit quality gates run automatically)
+6. **Push** to GitHub (pre-push quality gates validate everything before allowing push)
+
+See [Quality Gateways](#quality-gateways) section above for details on automatic checks.
 
 ## Component and Page Object Pattern
 
