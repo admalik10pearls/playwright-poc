@@ -372,8 +372,34 @@ test('verify user can add products to cart', async ({ page }) => {
 
 ## Best Practices
 
-- **Components** - Focus on a single UI feature (Products, Cart, Navigation, etc.)
-- **Page Objects** - Compose multiple components to represent a full page
-- **No Assertions in Page Objects** - Keep assertions in test files only
-- **Locators as Private** - Keep locator definitions internal to components/pages
-- **Descriptive Method Names** - Use clear method names that describe user actions
+- **🧱Components**
+  - Focus on a single UI feature (Products, Cart, Navigation, etc.)
+    - Keep methods small and simple to avoid high complexity (>8 in tests).
+    - Import only allowed layers: utilities, constants, and other components if needed.
+- **📄Page Objects**
+  - Compose multiple components to represent a full page
+    - Do not directly use raw page.locator, click, fill; delegate to components.
+    - Can import components, utilities, constants only. No API or test imports.
+- **✅ Assertions**
+  - Keep assertions in test files only
+    - Follow expect-expect rule: every test must assert at least once.
+- **🔒 Locators**
+  - Keep locator definitions internal to components/pages
+    - Use getter methods to expose values like cart count or product info.
+- **✍️ Method Names**
+  - Use clear method names that describe user actions
+    -Test method names should start lowercase.
+- **⚡ Async & Promise Safety**
+  - Reduce flakiness and race conditions
+    - Always await async operations; avoid misusing Promise.
+    - Do not use page.waitForTimeout(), Math.random(), or Date.now() in tests.
+- **📄 Documentation (JSDoc)**
+  - Maintain readability and IDE support
+    - Document all functions, classes, and types with JSDoc.
+    - Include @param and @returns tags for clarity.
+- **📦 Import Organization**
+  - Consistent and readable import order
+    - Node built-ins → External modules → Internal modules (shared/...) → Relative imports.
+- **🔍 Code Duplication**
+  - Avoid repeating logic
+    - Reuse components, utilities, and API clients wherever possible.
