@@ -191,6 +191,54 @@ This project implements **six automated quality gateways** to ensure code reliab
    - Prevents direct page method calls (must use page objects)
    - Maximum test complexity: 8
 
+4. **🧱 Architectural Boundaries** - Prevent cross-layer violations, accidental dependencies, and circular imports.
+   - Folders and files are categorized as **layers**:
+     - `tests/` → Playwright test files
+     - `shared/pages/` → Page objects (UI representation)
+     - `shared/components/` → Reusable UI components
+     - `shared/assertions/` → Assertion helpers
+     - `shared/utilities/` → Pure helper functions
+     - `shared/api/` → API clients for test data
+     - `shared/constants/` → Constant values (routes, strings, etc.)
+
+   - **Rules enforced by ESLint**:
+     - `tests` can import pages, components, assertions, utilities, API clients, constants
+     - `pages` can import components, utilities, constants
+     - `components` can import utilities, constants
+     - `assertions` can import utilities, constants
+     - `utilities` can import constants only
+     - `api` can import utilities and constants
+     - `constants` cannot import anything
+
+5. **⚡ Async Correctness & Promise Safety** - Reduce flakiness, avoid race conditions, and ensure proper async usage.
+   - Enforced with `@typescript-eslint` rules:
+     - `await-thenable` → ensures `await` is only used on promises
+     - `no-misused-promises` → prevents async misuse in hooks, callbacks, and loops
+     - `require-await` → warns if a function is marked async but doesn’t use await
+
+6. **🎯 Deterministic Test Enforcement** - Make all tests reproducible, deterministic, and maintainable.
+   - Enforced via `eslint-plugin-playwright` and custom rules:
+     - `no-wait-for-timeout` → prevents arbitrary `page.waitForTimeout()`
+     - `expect-expect` → ensures each test actually asserts something
+     - `no-focused-test` / `no-skipped-test` → prevents `.only` or skipped tests
+     - Restricted usage of `Math.random()` and `Date.now()` in tests
+     - Tests must be grouped under `describe()` blocks and have lowercase titles
+     - Page objects must be used for UI interactions; raw `page.locator`, `click`, `fill` in tests are banned
+
+7. **📄 Documentation Coverage** - Improves readability, helps new team members, and supports IDE tooltips
+   - All functions, classes, and types must include JSDoc comments
+   - `@returns` and `@param` must be documented for clarity
+
+8. **📦 Import Organization** - Consistent import order, readability, and reduced merge conflicts
+   - Imports are automatically sorted by:
+     - Node built-ins
+     - External modules
+     - Internal modules (`shared/...`)
+     - Relative imports
+
+9. **🔍 Code Duplication Detection** - Reduce maintenance cost and prevent subtle bugs
+   - `eslint-plugin-sonarjs` is used to identify duplicated or very similar code blocks
+
 #### Pre-Push Gateways (Automatic on `git push`)
 
 4. **🔐 Formatting Check** - Ensures code follows Prettier rules
@@ -207,15 +255,23 @@ This project implements **six automated quality gateways** to ensure code reliab
 
 ### Quality Metrics
 
-| Metric               | Threshold          | Status               |
-| -------------------- | ------------------ | -------------------- |
-| Complexity (general) | Max 10             | Error if exceeded    |
-| Complexity (tests)   | Max 8              | Error if exceeded    |
-| Complexity (config)  | Max 20             | Warning if exceeded  |
-| Unused Imports       | 0                  | Auto-fixed on commit |
-| Type Coverage        | Strict mode        | Validated on push    |
-| Test Structure       | Compliant          | Enforced on commit   |
-| Code Formatting      | Prettier compliant | Enforced on push     |
+| Metric                         | Threshold                                        | Status                         |
+| ------------------------------ | ------------------------------------------------ | ------------------------------ |
+| Complexity (general)           | Max 10                                           | Error if exceeded              |
+| Complexity (tests)             | Max 8                                            | Error if exceeded              |
+| Complexity (config)            | Max 20                                           | Warning if exceeded            |
+| Unused Imports                 | 0                                                | Auto-fixed on commit           |
+| Unused Variables               | 0 (\_-prefixed ignored)                          | Warning on commit              |
+| Test Naming & Structure        | Lowercase titles, require describe blocks        | Enforced on commit             |
+| Deterministic Test Practices   | No Math.random() / Date.now(), no raw page calls | Enforced on commit             |
+| Architectural Boundaries       | Layered import restrictions                      | Enforced on commit             |
+| Async Correctness              | No misused promises, await only on Promises      | Enforced on commit             |
+| Documentation Coverage (JSDoc) | All functions/classes/types documented           | Warning / Error on commit      |
+| Import Organization            | Sorted: Node → external → internal → relative    | Error / auto-fixable on commit |
+| Code Duplication Detection     | No duplicate or very similar code blocks         | Enforced on commit             |
+| Type Coverage                  | Strict mode                                      | Validated on push              |
+| Test Structure                 | Compliant                                        | Enforced on commit             |
+| Code Formatting                | Prettier compliant                               | Enforced on push               |
 
 ### Quality Gate Workflow
 
@@ -223,21 +279,28 @@ This project implements **six automated quality gateways** to ensure code reliab
 git commit
     ↓
 [PRE-COMMIT CHECKS]
-├─ Dead code detection (auto-fix)
-├─ Complexity analysis (max: 10)
-└─ Test structure validation
+├─ 💀 Dead Code Detection (unused imports & variables)
+├─ 📊 Code Complexity Analysis (general: 10, tests: 8)
+├─ 🧪 Test Naming & Structure Validation
+├─ 🧱 Architectural Boundaries
+├─ ⚡ Async Correctness & Promise Safety
+├─ 🎯 Deterministic Test Enforcement
+├─ 📄 Documentation Coverage (JSDoc)
+├─ 📦 Import Organization
+└─ 🔍 Code Duplication Detection
     ↓
-✅ Commit successful
+✅ Commit successful (auto-fixable items fixed automatically)
 
 git push
     ↓
 [PRE-PUSH CHECKS]
-├─ Format check (auto-fix)
-├─ Type safety check
-├─ Complexity validation
-└─ Full test suite execution
+├─ 🔐 Formatting Check (Prettier)
+├─ 📐 Type Safety Check (strict TypeScript)
+├─ 📊 Complexity Validation (config max 20, general max 10, tests max 8)
+└─ 🧪 Full Test Suite Execution (Playwright tests)
     ↓
-✅ Push allowed or ❌ Push blocked (fix and retry)
+✅ Push allowed or ❌ Push blocked (fix issues and retry)
+
 ```
 
 For detailed quality gateway documentation, see [THREE_GATEWAYS_IMPLEMENTATION.md](THREE_GATEWAYS_IMPLEMENTATION.md).
