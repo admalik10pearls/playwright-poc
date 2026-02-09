@@ -1,6 +1,7 @@
 import { defineConfig, devices } from '@playwright/test';
 import dotenv from 'dotenv';
 dotenv.config();
+const uiBaseURL = 'https://www.saucedemo.com';
 
 export default defineConfig({
   globalSetup: './global-setup.ts',
@@ -22,7 +23,7 @@ export default defineConfig({
       testIgnore: ['**/api/**'],
       use: {
         ...devices['Desktop Chrome'],
-        baseURL: 'https://www.saucedemo.com',
+        baseURL: uiBaseURL,
         storageState: 'auth.json',
       },
     },
@@ -31,7 +32,7 @@ export default defineConfig({
       testIgnore: ['**/api/**'],
       use: {
         ...devices['Desktop Firefox'],
-        baseURL: 'https://www.saucedemo.com',
+        baseURL: uiBaseURL,
         storageState: 'auth.json',
       },
     },
@@ -40,7 +41,7 @@ export default defineConfig({
       testIgnore: ['**/api/**'],
       use: {
         ...devices['Desktop Safari'],
-        baseURL: 'https://www.saucedemo.com',
+        baseURL: uiBaseURL,
         storageState: 'auth.json',
       },
     },

@@ -5,6 +5,7 @@ import complexity from 'eslint-plugin-complexity';
 import unusedImports from 'eslint-plugin-unused-imports';
 import jsdoc from 'eslint-plugin-jsdoc';
 import prettier from 'eslint-config-prettier';
+import sonarjs from 'eslint-plugin-sonarjs';
 
 export default [
   /* ----------------------------------
@@ -32,6 +33,7 @@ export default [
       complexity,
       'unused-imports': unusedImports,
       jsdoc,
+      sonarjs,
     },
     rules: {
       /* ---------- TypeScript ---------- */
@@ -78,6 +80,11 @@ export default [
       'jsdoc/check-types': 'warn',
       'jsdoc/require-param': 'warn',
       'jsdoc/require-returns': 'warn',
+
+      /* ---------- SonarJS ---------- */
+      'sonarjs/no-duplicate-string': ['warn', { threshold: 3 }],
+      'sonarjs/cognitive-complexity': ['error', 12],
+      'sonarjs/no-identical-functions': 'error',
     },
   },
 
@@ -96,6 +103,17 @@ export default [
           },
         },
       ],
+    },
+  },
+
+  /* ----------------------------------
+   * 🚫 SONAR RULES FOR TESTS
+   * ---------------------------------- */
+  {
+    files: ['tests/**/*.ts'],
+    rules: {
+      'sonarjs/no-identical-functions': 'off',
+      'sonarjs/no-duplicate-string': 'off',
     },
   },
 

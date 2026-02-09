@@ -1,4 +1,4 @@
-// global-setup.ts
+/* eslint-disable sonarjs/cognitive-complexity */
 import { chromium, firefox, webkit, FullConfig, expect } from '@playwright/test';
 import { LoginPage } from './shared/pages/login.page.ts';
 import { ROUTES } from './shared/constants/routes.ts';
