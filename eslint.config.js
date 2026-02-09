@@ -6,6 +6,7 @@ import unusedImports from 'eslint-plugin-unused-imports';
 import jsdoc from 'eslint-plugin-jsdoc';
 import prettier from 'eslint-config-prettier';
 import sonarjs from 'eslint-plugin-sonarjs';
+import importPlugin from 'eslint-plugin-import';
 
 export default [
   /* ----------------------------------
@@ -34,6 +35,7 @@ export default [
       'unused-imports': unusedImports,
       jsdoc,
       sonarjs,
+      import: importPlugin,
     },
     rules: {
       /* ---------- TypeScript ---------- */
@@ -85,6 +87,38 @@ export default [
       'sonarjs/no-duplicate-string': ['warn', { threshold: 3 }],
       'sonarjs/cognitive-complexity': ['error', 12],
       'sonarjs/no-identical-functions': 'error',
+
+      /* ---------- Import Plugin ---------- */
+      'import/order': [
+        'error',
+        {
+          groups: [
+            'builtin',
+            'external',
+            'internal',
+            ['parent', 'sibling', 'index'],
+            'object',
+            'type',
+          ],
+          pathGroups: [
+            {
+              pattern: '@/**',
+              group: 'internal',
+            },
+          ],
+          pathGroupsExcludedImportTypes: ['builtin'],
+          'newlines-between': 'always',
+          alphabetize: {
+            order: 'asc',
+            caseInsensitive: true,
+          },
+        },
+      ],
+
+      'import/newline-after-import': 'error',
+      'import/no-duplicates': 'error',
+      'import/no-cycle': 'warn',
+      'import/consistent-type-specifier-style': ['error', 'prefer-top-level'],
     },
   },
 

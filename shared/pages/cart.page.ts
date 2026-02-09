@@ -1,6 +1,7 @@
-import type { Page } from '@playwright/test';
-import { ProductsComponent } from '../components/products.component.ts';
 import { CartComponent } from '../components/cart.component.ts';
+import { ProductsComponent } from '../components/products.component.ts';
+
+import type { Page } from '@playwright/test';
 
 /**
  * Page object for the cart page. Composes product and cart components

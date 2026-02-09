@@ -1,6 +1,8 @@
-import type { Page } from '@playwright/test';
-import { ProductsComponent } from '../components/products.component.ts';
 import { CartComponent } from '../components/cart.component.ts';
+import { ProductsComponent } from '../components/products.component.ts';
+
+import type { Page } from '@playwright/test';
+
 /**
  * Page object representing the inventory/product list page.
  * Delegates product and cart interactions to reusable components.

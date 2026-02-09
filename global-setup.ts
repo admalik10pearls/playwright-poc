@@ -1,8 +1,9 @@
 /* eslint-disable sonarjs/cognitive-complexity */
 import { chromium, firefox, webkit, FullConfig, expect } from '@playwright/test';
-import { LoginPage } from './shared/pages/login.page.ts';
+
 import { ROUTES } from './shared/constants/routes.ts';
 import { STRINGS } from './shared/constants/strings.ts';
+import { LoginPage } from './shared/pages/login.page.ts';
 
 /**
  * Global setup for Playwright runs. When UI projects are included in the run

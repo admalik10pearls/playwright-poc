@@ -1,5 +1,6 @@
 import { defineConfig, devices } from '@playwright/test';
 import dotenv from 'dotenv';
+
 dotenv.config();
 const uiBaseURL = 'https://www.saucedemo.com';
 

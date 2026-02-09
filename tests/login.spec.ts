@@ -1,7 +1,8 @@
 import { test, expect } from '@playwright/test';
+
 import { ROUTES } from '../shared/constants/routes.ts';
-import { LoginPage } from '../shared/pages/login.page.ts';
 import { STRINGS } from '../shared/constants/strings.ts';
+import { LoginPage } from '../shared/pages/login.page.ts';
 
 test.describe('Login Functionality', () => {
   const user = process.env.APP_USER!;
