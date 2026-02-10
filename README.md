@@ -241,17 +241,20 @@ This project implements **six automated quality gateways** to ensure code reliab
 
 #### Pre-Push Gateways (Automatic on `git push`)
 
-4. **🔐 Formatting Check** - Ensures code follows Prettier rules
-   - Blocks push if formatting issues found
-   - Auto-fixable via `yarn format`
+10. **🔐 Formatting Check** - Ensures code follows Prettier rules
 
-5. **📐 Type Safety Check** - Validates TypeScript types
-   - Ensures all code passes strict TypeScript checking
-   - Blocks push if type errors found
+- Blocks push if formatting issues found
+- Auto-fixable via `yarn format`
 
-6. **✅ Full Test Suite Execution** - Runs all Playwright tests
-   - Blocks push if any tests fail
-   - Ensures no regressions before code reaches remote
+11. **📐 Type Safety Check** - Validates TypeScript types
+
+- Ensures all code passes strict TypeScript checking
+- Blocks push if type errors found
+
+12. **✅ Full Test Suite Execution** - Runs all Playwright tests
+
+- Blocks push if any tests fail
+- Ensures no regressions before code reaches remote
 
 ### Quality Metrics
 
