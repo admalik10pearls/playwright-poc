@@ -50,6 +50,9 @@ jobs:
       - name: Prettier Format Check
         run: yarn format:check
 
+      - name: Complexity Check
+        run: yarn complexity
+
   test:
     name: Run Playwright Tests
     runs-on: ubuntu-latest
@@ -80,6 +83,9 @@ jobs:
 
       - name: Run Playwright Tests
         run: yarn test
+        env:
+          APP_USER: ${{ vars.APP_USER }}
+          APP_PASS: ${{ secrets.APP_PASS }}
 
       - name: Upload Playwright Report
         uses: actions/upload-artifact@v6
