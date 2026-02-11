@@ -92,3 +92,9 @@ jobs:
         with:
           name: playwright-report
           path: playwright-report/
+
+      - name: Upload Allure Report
+        uses: actions/upload-artifact@v6
+        with:
+          name: allure-report
+          path: allure-results/
