@@ -1,0 +1,16 @@
+Retrieved pet: {
+  id: 2775386192887038500,
+  category: { id: 2853857365663853000, name: 'PhillipWilderman' },
+  name: 'doggie',
+  photoUrls: [ 'https://peaceful-reserve.biz/' ],
+  tags: [ { id: 51637294400509224, name: 'TommieHillsII' } ],
+  status: 'available'
+}
+Pet details: {
+  id: 2775386192887038500,
+  category: { id: 2853857365663853000, name: 'PhillipWilderman' },
+  name: 'doggie',
+  photoUrls: [ 'https://peaceful-reserve.biz/' ],
+  tags: [ { id: 51637294400509224, name: 'TommieHillsII' } ],
+  status: 'available'
+}
