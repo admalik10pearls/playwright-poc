@@ -65,6 +65,7 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: ${{ env.NODE_VERSION }}
+          cache: 'yarn'
 
       - name: Restore Yarn Cache
         uses: actions/cache@v5
@@ -100,10 +101,12 @@ jobs:
       - name: Generate Allure Report
         if: always()
         run: |
-          yarn add --dev allure-commandline
+          mkdir -p allure-results
 
-          mkdir -p allure-results/history
-          cp -r gh-pages-history/history/* allure-results/history/ || true
+          if [ -d "gh-pages-history/history" ]; then
+            mkdir -p allure-results/history
+            cp -r gh-pages-history/history/* allure-results/history/
+          fi
 
           yarn allure generate allure-results --clean -o allure-report
 
