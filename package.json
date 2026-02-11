@@ -14,7 +14,8 @@
     "test:debug": "yarn playwright test --debug",
     "test:interactive": "yarn playwright test --ui",
     "typecheck": "tsc --noEmit",
-    "complexity": "eslint . --max-warnings=0"
+    "complexity": "eslint . --max-warnings=0",
+    "serve-allure-reports": "allure serve allure-results"
   },
   "lint-staged": {
     "*.ts": [
@@ -48,6 +49,8 @@
     "@types/node": "^25.0.10",
     "@typescript-eslint/eslint-plugin": "^8.53.1",
     "@typescript-eslint/parser": "^8.53.1",
+    "allure-commandline": "^2.36.0",
+    "allure-playwright": "^3.4.5",
     "commitizen": "^4.3.1",
     "cz-conventional-changelog": "^3.3.0",
     "dotenv": "^17.2.3",
