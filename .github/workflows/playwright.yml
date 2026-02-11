@@ -25,6 +25,7 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: ${{ env.NODE_VERSION }}
+          cache: 'yarn'
 
       - name: Restore Yarn Cache
         id: yarn-cache
@@ -97,7 +98,7 @@ jobs:
           path: gh-pages
 
       - name: Build Allure Report
-        uses: simple-elf/allure-report-action@v1.7
+        uses: simple-elf/allure-report-action@v1.11
         if: always()
         with:
           allure_results: allure-results
@@ -117,3 +118,13 @@ jobs:
         with:
           name: playwright-report
           path: playwright-report/
+
+      - name: Post Report Link to PR
+        uses: thollander/actions-comment-pull-request@v2
+        if: always() && github.event_name == 'pull_request'
+        with:
+          message: |
+            ### 📊 Allure Test Report
+            The latest test results are ready!
+
+            🔍 [View Allure Report](https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/)
