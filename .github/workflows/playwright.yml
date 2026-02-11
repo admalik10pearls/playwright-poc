@@ -25,6 +25,7 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: ${{ env.NODE_VERSION }}
+          cache: 'yarn'
 
       - name: Restore Yarn Cache
         id: yarn-cache
@@ -64,6 +65,7 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: ${{ env.NODE_VERSION }}
+          cache: 'yarn'
 
       - name: Restore Yarn Cache
         uses: actions/cache@v5
@@ -86,6 +88,35 @@ jobs:
         env:
           APP_USER: ${{ vars.APP_USER }}
           APP_PASS: ${{ secrets.APP_PASS }}
+        continue-on-error: true
+
+      - name: Load Allure history
+        uses: actions/checkout@v4
+        if: always()
+        continue-on-error: true
+        with:
+          ref: gh-pages
+          path: gh-pages
+
+      - name: Generate Allure Report
+        if: always()
+        run: |
+          mkdir -p allure-results
+
+          if [ -d "gh-pages-history/history" ]; then
+            mkdir -p allure-results/history
+            cp -r gh-pages-history/history/* allure-results/history/
+          fi
+
+          yarn allure generate allure-results --clean -o allure-report
+
+      - name: Deploy report to Github Pages
+        if: always()
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: allure-report
+          publish_branch: gh-pages
 
       - name: Upload Playwright Report
         uses: actions/upload-artifact@v6
@@ -93,8 +124,12 @@ jobs:
           name: playwright-report
           path: playwright-report/
 
-      - name: Upload Allure Report
-        uses: actions/upload-artifact@v6
+      - name: Post Report Link to PR
+        uses: thollander/actions-comment-pull-request@v2
+        if: always() && github.event_name == 'pull_request'
         with:
-          name: allure-report
-          path: allure-results/
+          message: |
+            ### 📊 Allure Test Report
+            The latest test results are ready!
+
+            🔍 [View Allure Report](https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/)
