@@ -1,0 +1,16 @@
+Retrieved pet: {
+  id: 132,
+  category: { id: 0, name: 'dickey' },
+  name: 'doggie',
+  photoUrls: [ 'string' ],
+  tags: [ { id: 100, name: 'bowman' } ],
+  status: 'available'
+}
+Pet details: {
+  id: 132,
+  category: { id: 0, name: 'dickey' },
+  name: 'doggie',
+  photoUrls: [ 'string' ],
+  tags: [ { id: 100, name: 'bowman' } ],
+  status: 'available'
+}
