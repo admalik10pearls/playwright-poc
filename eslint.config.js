@@ -247,6 +247,12 @@ export default [
           message:
             'Test titles must start with lowercase letters. Use descriptive names and optional @tags like @smoke, @no-auth.',
         },
+        {
+          selector:
+            "CallExpression[callee.name='test']:not(:has(Literal[value=/@smoke|@regression|@sanity|@bug/])), CallExpression[callee.name='test']:not(:has(Property[key.name='tag'] > Literal[value=/^@/]))",
+          message:
+            'Test must include a metadata tag. Either include it in the title string (e.g., "test @smoke") or in the test configuration object (e.g., { tag: "@smoke" }).',
+        },
       ],
 
       // 🔎 Enforce test grouping

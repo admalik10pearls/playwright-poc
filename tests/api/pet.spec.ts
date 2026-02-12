@@ -11,13 +11,13 @@ test.describe('Petstore API GET tests', () => {
     client = new PetstoreClient(apiContext, process.env.PETSTORE_API_KEY);
   });
 
-  test('find pets by status', async () => {
+  test('find pets by status', { tag: '@smoke' }, async () => {
     const pets = await client.findPetsByStatus('available');
     expect(pets.length).toBeGreaterThan(0);
     console.log('Found pets:', pets.length);
   });
 
-  test('get a single pet by ID (dynamic)', async () => {
+  test('get a single pet by ID (dynamic)', { tag: '@smoke' }, async () => {
     const pets = await client.findPetsByStatus('available');
     const petId = pets[1].id;
 

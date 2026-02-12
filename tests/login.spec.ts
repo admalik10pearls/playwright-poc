@@ -10,18 +10,18 @@ test.describe('Login Functionality', () => {
   test.beforeEach('Test Preconditions', async ({ page }) => {
     await page.goto('/');
   });
-  test('user is able to login with valid credentials', async ({ page }) => {
+  test('user is able to login with valid credentials', { tag: '@smoke' }, async ({ page }) => {
     const login = new LoginPage(page);
     await login.login(user, pass);
     await expect(page).toHaveURL(ROUTES.inventory);
   });
-  test('user is unable to login with invalid password', async ({ page }) => {
+  test('user is unable to login with invalid password', { tag: '@smoke' }, async ({ page }) => {
     const login = new LoginPage(page);
     await login.login(user, 'wrongPassword');
     await expect(page.getByText(STRINGS.loginErrorText)).toBeVisible();
     await expect(page).not.toHaveURL(ROUTES.inventory);
   });
-  test('user is unable to login with invalid username', async ({ page }) => {
+  test('user is unable to login with invalid username', { tag: '@smoke' }, async ({ page }) => {
     const login = new LoginPage(page);
     await login.login('invalidUser', pass);
     await expect(page.getByText(STRINGS.loginErrorText)).toBeVisible();
