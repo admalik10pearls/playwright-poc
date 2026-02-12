@@ -51,6 +51,17 @@ export default [
       ],
     },
     rules: {
+      'no-restricted-imports': [
+        'error',
+        {
+          paths: [
+            {
+              name: 'lodash',
+              message: 'Please use the optimized versions in shared/utilities/ instead.',
+            },
+          ],
+        },
+      ],
       /* 🧱 Architectural boundaries */
       'boundaries/element-types': [
         'error',
@@ -97,6 +108,8 @@ export default [
       '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
       '@typescript-eslint/no-explicit-any': 'warn',
       '@typescript-eslint/no-floating-promises': 'error',
+      // Enforce readonly for better immutability and safer code
+      '@typescript-eslint/prefer-readonly': 'error',
       /* ---------- Async correctness ---------- */
       '@typescript-eslint/await-thenable': 'error',
 
@@ -127,6 +140,7 @@ export default [
       'playwright/no-skipped-test': 'warn',
       'playwright/no-wait-for-timeout': 'error',
       'playwright/expect-expect': 'error',
+      'playwright/no-standalone-expect': 'error',
 
       /* ---------- JSDoc ---------- */
       'jsdoc/require-jsdoc': [
@@ -247,6 +261,46 @@ export default [
           message:
             'Test titles must start with lowercase letters. Use descriptive names and optional @tags like @smoke, @no-auth.',
         },
+        // ✅ Enforce that tests include a metadata tag (either in the title or as a config property)
+        {
+          selector:
+            "CallExpression[callee.name='test']:not(:has(Literal[value=/@smoke|@regression|@sanity|@bug/])), CallExpression[callee.name='test']:not(:has(Property[key.name='tag'] > Literal[value=/^@/]))",
+          message:
+            'Test must include a metadata tag. Either include it in the title string (e.g., "test @smoke") or in the test configuration object (e.g., { tag: "@smoke" }).',
+        },
+        // ⛔ No debug-only code in tests
+        {
+          selector: "CallExpression[callee.property.name='pause']",
+          message: 'page.pause() is for local debugging only. Remove it before committing.',
+        },
+        {
+          selector: "CallExpression[callee.property.name='debug']",
+          message: 'debug() calls are for local development only.',
+        },
+        // ⛔ No hardcoded URLs in tests
+        {
+          selector: 'Literal[value=/^https?:\\/\\//]',
+          message:
+            'Do not hardcode URLs in tests. Use the "baseURL" from playwright.config.ts or import constants from "shared/constants".',
+        },
+        // ⛔ No conditional logic in tests
+        {
+          selector: 'IfStatement',
+          message:
+            'Avoid conditional logic (if statements) in tests. Tests should be deterministic. Move logic to Page Objects or use test data.',
+        },
+        {
+          selector: 'SwitchStatement',
+          message:
+            'Avoid switch statements in tests. Use separate test cases for different scenarios.',
+        },
+        // ⛔ Enforce descriptive test step names for better Allure reporting
+        {
+          selector:
+            "CallExpression[callee.object.name='test'][callee.property.name='step'][arguments.0.value.length < 5]",
+          message:
+            'Test step names are too short. Provide a descriptive string for better Allure reporting.',
+        },
       ],
 
       // 🔎 Enforce test grouping
@@ -274,6 +328,21 @@ export default [
   {
     files: ['shared/pages/**/*.ts', 'shared/components/**/*.ts'],
     rules: {
+      'no-restricted-syntax': [
+        'error',
+        // ⛔ No raw locators in Page Objects - enforce using Playwright's recommended locator strategies
+        {
+          selector: 'Literal[value=/^\\//], Literal[value=/^\\(\\//]',
+          message:
+            'Avoid using XPath selectors. Prefer Playwright locators (getByRole, getByText) or CSS selectors for better stability.',
+        },
+        // ⛔ No assertions inside Page Objects
+        {
+          selector: "CallExpression[callee.name='expect']",
+          message:
+            'Do not put assertions (expect) inside Page Objects. Move assertions to the test file to keep POMs reusable.',
+        },
+      ],
       // Locators must be readonly
       '@typescript-eslint/prefer-readonly': ['error'],
 
