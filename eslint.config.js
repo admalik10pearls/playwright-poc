@@ -51,6 +51,17 @@ export default [
       ],
     },
     rules: {
+      'no-restricted-imports': [
+        'error',
+        {
+          paths: [
+            {
+              name: 'lodash',
+              message: 'Please use the optimized versions in shared/utilities/ instead.',
+            },
+          ],
+        },
+      ],
       /* 🧱 Architectural boundaries */
       'boundaries/element-types': [
         'error',
@@ -97,6 +108,8 @@ export default [
       '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
       '@typescript-eslint/no-explicit-any': 'warn',
       '@typescript-eslint/no-floating-promises': 'error',
+      // Enforce readonly for better immutability and safer code
+      '@typescript-eslint/prefer-readonly': 'error',
       /* ---------- Async correctness ---------- */
       '@typescript-eslint/await-thenable': 'error',
 
@@ -127,6 +140,7 @@ export default [
       'playwright/no-skipped-test': 'warn',
       'playwright/no-wait-for-timeout': 'error',
       'playwright/expect-expect': 'error',
+      'playwright/no-standalone-expect': 'error',
 
       /* ---------- JSDoc ---------- */
       'jsdoc/require-jsdoc': [
@@ -269,6 +283,24 @@ export default [
           message:
             'Do not hardcode URLs in tests. Use the "baseURL" from playwright.config.ts or import constants from "shared/constants".',
         },
+        // ⛔ No conditional logic in tests
+        {
+          selector: 'IfStatement',
+          message:
+            'Avoid conditional logic (if statements) in tests. Tests should be deterministic. Move logic to Page Objects or use test data.',
+        },
+        {
+          selector: 'SwitchStatement',
+          message:
+            'Avoid switch statements in tests. Use separate test cases for different scenarios.',
+        },
+        // ⛔ Enforce descriptive test step names for better Allure reporting
+        {
+          selector:
+            "CallExpression[callee.object.name='test'][callee.property.name='step'][arguments.0.value.length < 5]",
+          message:
+            'Test step names are too short. Provide a descriptive string for better Allure reporting.',
+        },
       ],
 
       // 🔎 Enforce test grouping
@@ -296,6 +328,21 @@ export default [
   {
     files: ['shared/pages/**/*.ts', 'shared/components/**/*.ts'],
     rules: {
+      'no-restricted-syntax': [
+        'error',
+        // ⛔ No raw locators in Page Objects - enforce using Playwright's recommended locator strategies
+        {
+          selector: 'Literal[value=/^\\//], Literal[value=/^\\(\\//]',
+          message:
+            'Avoid using XPath selectors. Prefer Playwright locators (getByRole, getByText) or CSS selectors for better stability.',
+        },
+        // ⛔ No assertions inside Page Objects
+        {
+          selector: "CallExpression[callee.name='expect']",
+          message:
+            'Do not put assertions (expect) inside Page Objects. Move assertions to the test file to keep POMs reusable.',
+        },
+      ],
       // Locators must be readonly
       '@typescript-eslint/prefer-readonly': ['error'],
 
