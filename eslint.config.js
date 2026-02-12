@@ -263,6 +263,12 @@ export default [
           selector: "CallExpression[callee.property.name='debug']",
           message: 'debug() calls are for local development only.',
         },
+        // ⛔ No hardcoded URLs in tests
+        {
+          selector: 'Literal[value=/^https?:\\/\\//]',
+          message:
+            'Do not hardcode URLs in tests. Use the "baseURL" from playwright.config.ts or import constants from "shared/constants".',
+        },
       ],
 
       // 🔎 Enforce test grouping
