@@ -7,8 +7,8 @@ import { Pet } from '../models/pet.model.ts';
  */
 export class PetstoreClient {
   constructor(
-    private request: APIRequestContext,
-    private apiKey?: string,
+    private readonly request: APIRequestContext,
+    private readonly apiKey?: string,
   ) {}
 
   /**
