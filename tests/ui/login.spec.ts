@@ -2,13 +2,13 @@ import path from 'path';
 
 import { test, expect } from '@playwright/test';
 
-import { ROUTES } from '../shared/constants/routes.ts';
-import { STRINGS } from '../shared/constants/strings.ts';
-import { LoginPage } from '../shared/pages/login.page.ts';
-import { loadTestData } from '../shared/utilities/data-loader.ts';
+import { ROUTES } from '../../shared/constants/routes.ts';
+import { STRINGS } from '../../shared/constants/strings.ts';
+import { LoginPage } from '../../shared/pages/login.page.ts';
+import { loadTestData } from '../../shared/utilities/data-loader.ts';
 
 const __dirname = import.meta.dirname;
-const userDataPath = path.join(__dirname, '../testdata/loginData.json');
+const userDataPath = path.join(__dirname, '../../testdata/loginData.json');
 const userData = loadTestData(userDataPath);
 
 test.describe('Login Functionality', () => {
