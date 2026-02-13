@@ -58,6 +58,11 @@ jobs:
     name: Run Playwright Tests
     runs-on: ubuntu-latest
     needs: setup
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+      pull-requests: write
     steps:
       - uses: actions/checkout@v6
 
@@ -90,33 +95,36 @@ jobs:
           APP_PASS: ${{ secrets.APP_PASS }}
         continue-on-error: true
 
-      - name: Load Allure history
-        uses: actions/checkout@v4
-        if: always()
-        continue-on-error: true
+      - name: Restore Allure History
+        uses: actions/cache@v5
         with:
-          ref: gh-pages
-          path: gh-pages
+          path: allure-results/history
+          key: allure-history-${{ github.run_id }}
+          restore-keys: allure-history-
 
       - name: Generate Allure Report
         if: always()
         run: |
           mkdir -p allure-results
-
-          if [ -d "gh-pages-history/history" ]; then
-            mkdir -p allure-results/history
-            cp -r gh-pages-history/history/* allure-results/history/
-          fi
-
           yarn allure generate allure-results --clean -o allure-report
 
-      - name: Deploy report to Github Pages
+      - name: Save Allure History
         if: always()
-        uses: peaceiris/actions-gh-pages@v3
+        uses: actions/cache/save@v4
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: allure-report
-          publish_branch: gh-pages
+          path: allure-report/history
+          key: allure-history-${{ github.run_id }}
+
+      - name: Upload Pages Artifact
+        if: always()
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: allure-report
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        if: always()
+        uses: actions/deploy-pages@v4
 
       - name: Upload Playwright Report
         uses: actions/upload-artifact@v6
@@ -130,6 +138,5 @@ jobs:
         with:
           message: |
             ### 📊 Allure Test Report
-            The latest test results are ready!
-
-            🔍 [View Allure Report](https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/)
+            ✅ [🔍 Click to View Results](${{ steps.deployment.outputs.page_url }})
+          comment_tag: allure-report-link

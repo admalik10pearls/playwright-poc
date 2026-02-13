@@ -1,8 +1,8 @@
 import { test, expect } from '@playwright/test';
 
-import { ROUTES } from '../shared/constants/routes.ts';
-import { InventoryPage } from '../shared/pages/inventory.page.ts';
-import { getRandomInt } from '../shared/utilities/utilities.ts';
+import { ROUTES } from '../../shared/constants/routes.ts';
+import { InventoryPage } from '../../shared/pages/inventory.page.ts';
+import { getRandomInt } from '../../shared/utilities/utilities.ts';
 
 test.describe('Inventory Functionality', () => {
   test.beforeEach('Test Preconditions', async ({ page }) => {
