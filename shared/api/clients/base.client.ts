@@ -5,6 +5,19 @@ import { APIResponse, expect } from '@playwright/test';
  *  It can be extended by specific API clients to implement endpoint-specific methods while reusing shared logic.
  */
 export class BaseClient {
+  protected apiKey?: string;
+  constructor(apiKey?: string) {
+    this.apiKey = apiKey;
+  }
+
+  /**
+   * Generates headers for API requests, including the API key if it is provided.
+   * @returns An object containing the headers for the API request, or undefined if no API key is set.
+   */
+  protected getHeaders(): { [key: string]: string } | undefined {
+    return this.apiKey ? { api_key: this.apiKey } : undefined;
+  }
+
   verifyStatusCode(response: APIResponse, expectedCode: number = 200) {
     expect(response.status()).toBe(expectedCode);
     console.log(`Verified Status Code: ${response.status()}`);
@@ -48,5 +61,21 @@ export class BaseClient {
     const body = await response.json();
     expect(body).toMatchObject(expectedData);
     console.log('Response body matches the expected schema.');
+  }
+  /**
+   * Verifies an error response (e.g., 404, 400).
+   * @param response The APIResponse object.
+   * @param expectedCode The expected error status code.
+   * @param expectedMessage The expected error message text.
+   */
+  async verifyErrorResponse(response: APIResponse, expectedCode: number, expectedMessage?: string) {
+    expect(response.status()).toBe(expectedCode);
+
+    const body = await response.json();
+    if (expectedMessage) {
+      expect(body.message || body.type).toContain(expectedMessage);
+    }
+
+    console.log(`Verified Error Response: ${expectedCode} with message: ${expectedMessage}`);
   }
 }
