@@ -9,17 +9,9 @@ import { Pet } from '../models/pet.model.ts';
 export class PetstoreClient extends BaseClient {
   constructor(
     private readonly request: APIRequestContext,
-    private readonly apiKey?: string,
+    apiKey?: string,
   ) {
-    super();
-  }
-
-  /**
-   * Generates headers for API requests, including the API key if it is provided.
-   * @returns An object containing the headers for the API request, or undefined if no API key is set.
-   */
-  private getHeaders(): { [key: string]: string } | undefined {
-    return this.apiKey ? { api_key: this.apiKey } : undefined;
+    super(apiKey);
   }
 
   /**
