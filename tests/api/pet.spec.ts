@@ -4,12 +4,11 @@ import { createApiContext } from '../../shared/api/apiContext.ts';
 import { PetstoreClient } from '../../shared/api/clients/petstore.client.ts';
 import { Pet } from '../../shared/api/models/pet.model.ts';
 
-test.describe('Petstore API GET tests', () => {
+test.describe('Petstore API tests', () => {
   let client: PetstoreClient;
 
   test.beforeEach(async () => {
     const apiContext = await createApiContext();
-    // Your client now receives the context and the optional API key
     client = new PetstoreClient(apiContext, process.env.PETSTORE_API_KEY);
   });
 
@@ -52,5 +51,11 @@ test.describe('Petstore API GET tests', () => {
       name: 'TestPet',
       status: 'available',
     });
+  });
+  test('error 404: Get pet with non-existent ID', { tag: '@smoke' }, async () => {
+    const nonExistentId = 999999999;
+    const response = await client.getPetById(nonExistentId);
+    await client.verifyErrorResponse(response, 404, 'Pet not found');
+    await expect(response).not.toBeOK();
   });
 });
