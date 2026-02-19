@@ -24,7 +24,7 @@ export class CartPage {
    * Count products in the listing.
    * @returns {Promise<number>} The number of products found in the listing.
    */
-  async getProductCount() {
+  async getProductCount(): Promise<number> {
     return await this.products.getProductCount();
   }
 
@@ -38,9 +38,9 @@ export class CartPage {
 
   /**
    * Read the cart badge count as shown in the header.
-   * @returns {Promise<number>} The number shown in the cart badge, or 0 if no badge is visible.
+   * @returns {Promise<string>} The number shown in the cart badge, or 0 if no badge is visible.
    */
-  async getCartCount() {
+  async getCartCount(): Promise<string> {
     return await this.cart.getCartCount();
   }
 
@@ -49,7 +49,7 @@ export class CartPage {
    * @param index - zero-based product index
    * @returns {Promise<string>} The price text of the specified product.
    */
-  async getProductPriceByIndex(index: number) {
+  async getProductPriceByIndex(index: number): Promise<string> {
     return await this.products.getProductPriceByIndex(index);
   }
 

@@ -18,9 +18,9 @@ export class CartComponent {
 
   /**
    * Read the cart badge text (number of items).
-   * @returns the text content of the cart badge, which indicates the number of items in the cart.
+   * @returns {Promise<string>} the text content of the cart badge, which indicates the number of items in the cart.
    */
-  async getCartCount() {
+  async getCartCount(): Promise<string> {
     return await this.cartBadge.innerText();
   }
 

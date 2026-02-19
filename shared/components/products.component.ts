@@ -24,7 +24,7 @@ export class ProductsComponent {
    * Count products in the listing.
    * @returns {Promise<number>} The number of products found in the listing.
    */
-  async getProductCount() {
+  async getProductCount(): Promise<number> {
     return await this.products.count();
   }
 
@@ -41,7 +41,7 @@ export class ProductsComponent {
    * @param index - zero-based index of the product
    * @returns {Promise<string>} The price text of the specified product.
    */
-  async getProductPriceByIndex(index: number) {
+  async getProductPriceByIndex(index: number): Promise<string> {
     return await this.productPrice.nth(index).innerText();
   }
 }
